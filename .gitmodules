@@ -1,0 +1,3 @@
+[submodule "automations_iot_administration"]
+	path = automations_iot_administration
+	url = git@github.com:vurokrazia/automations_iot_administration.git
