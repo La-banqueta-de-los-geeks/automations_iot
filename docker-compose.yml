@@ -1,0 +1,38 @@
+version: "3.2"
+volumes:
+  mysql_automations:
+  postgres_automation:
+services:
+  db_automation:
+    restart: on-failure:3
+    image: postgres
+    volumes:
+      - postgres_automation:/var/lib/postgresql/data
+    ports:
+      - 4300:5432
+    env_file:
+      - enviroments/.env.postgresql
+  automations_redis:
+    restart:  on-failure:3
+    image: "redis:alpine"
+    command: redis-server --requirepass vurokrazia
+    ports:
+      - "6377:6379"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+  iot_administration:
+    restart:  on-failure:3
+    build:
+      context: ./automations_iot_administration
+      dockerfile: dev.dockerfile
+    ports:
+      - "4002:3000"
+    depends_on:
+      - automations_redis
+      - db_automation
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./automations_iot_administration:/home/app
+    env_file:
+      - enviroments/.env.iot_administration
