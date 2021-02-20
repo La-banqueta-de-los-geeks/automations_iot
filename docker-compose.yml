@@ -2,6 +2,7 @@ version: "3.2"
 volumes:
   mysql_automations:
   postgres_automation:
+  bundle_path_automation:
 services:
   db_automation:
     restart: on-failure:3
@@ -27,6 +28,7 @@ services:
       dockerfile: dev.dockerfile
     ports:
       - "4002:3000"
+      - "9022:9022"
     depends_on:
       - automations_redis
       - db_automation
@@ -34,5 +36,42 @@ services:
     tty: true
     volumes:
       - ./automations_iot_administration:/home/app
+      - bundle_path_automation:/usr/local/bundle # New
     env_file:
       - enviroments/.env.iot_administration
+  iot_sidekiq_administration:
+    command: bundle exec sidekiq
+    restart: on-failure:3
+    build:
+      context: ./automations_iot_administration
+      dockerfile: dev.dockerfile
+    depends_on:
+      - automations_redis
+      - db_automation
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./automations_iot_administration:/home/app
+      - bundle_path_automation:/usr/local/bundle # New
+    env_file:
+      - enviroments/.env.iot_administration
+  iot_sidekiq_mailers:
+    command: bundle exec sidekiq -q mailers
+    restart: on-failure:3
+    ports:
+      - "25:25"
+    build:
+      context: ./automations_iot_administration
+      dockerfile: dev.dockerfile
+    depends_on:
+      - automations_redis
+      - db_automation
+    volumes:
+      - ./automations_iot_administration:/home/app
+      - bundle_path_automation:/usr/local/bundle # New
+    env_file:
+      - enviroments/.env.iot_administration
+  maildev:
+    image: djfarrelly/maildev
+    ports:
+      - "1080:80"
