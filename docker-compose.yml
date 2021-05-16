@@ -6,7 +6,7 @@ volumes:
 services:
   db_automation:
     restart: on-failure:3
-    image: postgres
+    image: postgres:13.2
     volumes:
       - postgres_automation:/var/lib/postgresql/data
     ports:
@@ -18,7 +18,7 @@ services:
     image: "redis:alpine"
     command: redis-server --requirepass vurokrazia
     ports:
-      - "6377:6379"
+      - "6376:6379"
     environment:
       - REDIS_REPLICATION_MODE=master
   iot_administration:
@@ -26,6 +26,8 @@ services:
     build:
       context: ./automations_iot_administration
       dockerfile: dev.dockerfile
+      args:
+        uuid: ${CURRENT_UID:-1000}
     ports:
       - "4002:3000"
       - "9022:9022"
@@ -39,12 +41,25 @@ services:
       - bundle_path_automation:/usr/local/bundle # New
     env_file:
       - enviroments/.env.iot_administration
+  # iot_frontend_administration:
+  #   restart:  on-failure:3
+  #   build:
+  #     context: ./automations_iot_frontend
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./automations_iot_frontend:/app
+  #   ports:
+  #     - "4004:3000"
+  #   stdin_open: true
+  #   tty: true
   iot_sidekiq_administration:
     command: bundle exec sidekiq
     restart: on-failure:3
     build:
       context: ./automations_iot_administration
       dockerfile: dev.dockerfile
+      args:
+        uuid: ${CURRENT_UID:-1000}
     depends_on:
       - automations_redis
       - db_automation
@@ -56,13 +71,15 @@ services:
     env_file:
       - enviroments/.env.iot_administration
   iot_sidekiq_mailers:
-    command: bundle exec sidekiq -q mailers
+    command: sh ./entrypoints/docker-entrypoint-sidekiq.sh
     restart: on-failure:3
     ports:
       - "25:25"
     build:
       context: ./automations_iot_administration
       dockerfile: dev.dockerfile
+      args:
+        uuid: ${CURRENT_UID:-1000}
     depends_on:
       - automations_redis
       - db_automation
