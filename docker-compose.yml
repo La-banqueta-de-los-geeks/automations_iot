@@ -34,7 +34,7 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - ./automations_iot_administration:/home/app
+      - ./automations_iot_administration:/home/developer/app
       - bundle_path_automation:/usr/local/bundle # New
     env_file:
       - enviroments/.env.iot_administration
@@ -59,7 +59,7 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - ./automations_iot_administration:/home/app
+      - ./automations_iot_administration:/home/developer/app
       - bundle_path_automation:/usr/local/bundle # New
     env_file:
       - enviroments/.env.iot_administration
@@ -73,7 +73,7 @@ services:
       - iot_redis
       - iot_db_automation
     volumes:
-      - ./automations_iot_administration:/home/app
+      - ./automations_iot_administration:/home/developer/app
       - bundle_path_automation:/usr/local/bundle # New
     env_file:
       - enviroments/.env.iot_administration
