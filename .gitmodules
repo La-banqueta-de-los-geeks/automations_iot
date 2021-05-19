@@ -1,6 +1,9 @@
-[submodule "automations_iot_administration"]
-	path = automations_iot_administration
-	url = git@github.com:vurokrazia/automations_iot_administration.git
-[submodule "automations_iot_frontend"]
-	path = automations_iot_frontend
-	url = git@github.com:vurokrazia/automations_iot_frontend.git
+[submodule "iot_administration"]
+	path = iot_administration
+	url = git@github.com:La-banqueta-de-los-geeks/iot_administration
+[submodule "iot_frontend"]
+	path = iot_frontend
+	url = git@github.com:La-banqueta-de-los-geeks/iot_frontend
+[submodule "io_rasbperry"]
+	path = io_rasbperry
+	url = git@github.com:La-banqueta-de-los-geeks/io_rasbperry.git
