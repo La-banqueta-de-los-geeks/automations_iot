@@ -6,7 +6,7 @@ Requerimos tener en nuestro enviroment instalado lo siguiente
 ## Clonar repositorio
 El proyecto se compone de dos repositorios, el repositorio principal donde tenemos nuestro archivo docker compose y configuramos nuestras variables de ambiernte.
 
-`git clone  --recurse-submodules  https://github.com/vurokrazia/automations_iot`
+`git clone  --recurse-submodules  https://github.com/La-banqueta-de-los-geeks/automations_iot`
 
 ## Iniciando el setup
 Copiar nuestros archivos de la carpeta enviroments removiendo la palabra example y escribiendo el valor de nuestras credenciales o dejar las credenciales de ejemplo.
