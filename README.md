@@ -19,6 +19,10 @@ Copiar nuestros archivos de la carpeta enviroments removiendo la palabra example
   cp .dummy.postgresql .env.postgresql 
   cp .dummy.iot_administration .env.iot_administration
 ```
+Por recomendacion entra a los proyectos y mueve la branch a main
+```
+  git checkout main
+```
 Creamos nuestra imagen del proyecto automations iot administration
 ```
   docker-compose build
