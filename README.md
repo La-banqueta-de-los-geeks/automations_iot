@@ -6,14 +6,18 @@ Requerimos tener en nuestro enviroment instalado lo siguiente
 ## Clonar repositorio
 El proyecto se compone de dos repositorios, el repositorio principal donde tenemos nuestro archivo docker compose y configuramos nuestras variables de ambiernte.
 
-`git clone  --recurse-submodules  https://github.com/La-banqueta-de-los-geeks/automations_iot`
+`git clone  --recurse-submodules  https://github.com/La-banqueta-de-los-geeks/automations_iot automations`
 
 ## Iniciando el setup
 Copiar nuestros archivos de la carpeta enviroments removiendo la palabra example y escribiendo el valor de nuestras credenciales o dejar las credenciales de ejemplo.
-```
+``` bash
   cd enviroments/
-  cp .example.env.postgresql .env.postgresql 
-  cp .example.env.iot_administration .env.iot_administration
+  # Si vas a escribir tu configuracion realiza estos pasos
+  cp .example.postgresql .env.postgresql 
+  cp .example.iot_administration .env.iot_administration
+  # Si no sabes que estas haciendo y/o solo deseas ejecutar el proyecto realiza estos pasos
+  cp .dummy.postgresql .env.postgresql 
+  cp .dummy.iot_administration .env.iot_administration
 ```
 Creamos nuestra imagen del proyecto automations iot administration
 ```
@@ -25,11 +29,11 @@ Iniciamos nuestros servicios
 ```
 Creamos la base de datos del proyecto
 ```
-  docker-compose  exec automations_iot_administration rails db:create
+  docker-compose  exec iot_administration rails db:create
 ```
 Ejecutamos las migraciones del proyecto
 ```
-  docker-compose exec automations_iot_administration rails db:migrate
+  docker-compose exec iot_administration rails db:migrate
 ```
 ## Services
 * Iot administration

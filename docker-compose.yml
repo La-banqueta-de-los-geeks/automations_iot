@@ -39,18 +39,18 @@ services:
     env_file:
       - enviroments/.env.iot_administration
   # iot_frontend_administration:
-  #   restart:  on-failure:3
-  #   build:
-  #     context: ./iot_frontend
-  #     dockerfile: Dockerfile
-  #   volumes:
-  #     - ./iot_frontend:/app
-  #   ports:
-  #     - "4004:3000"
-  #   stdin_open: true
-  #   tty: true
+  #    restart:  on-failure:3
+  #    build:
+  #      context: ./iot_frontend
+  #      dockerfile: Dockerfile
+  #    volumes:
+  #      - ./iot_frontend:/app
+  #    ports:
+  #      - "4001:3000"
+  #    stdin_open: true
   iot_sidekiq_administration:
-    command: bundle exec sidekiq
+    environment:
+      - RUN_SIDEKIQ=0
     restart: on-failure:3
     image: automations_iot_administration:latest
     depends_on:
@@ -64,7 +64,8 @@ services:
     env_file:
       - enviroments/.env.iot_administration
   iot_sidekiq_mailers:
-    command: sh ./entrypoints/docker-entrypoint-sidekiq.sh
+    environment:
+      - RUN_MAILERS=0
     restart: on-failure:3
     ports:
       - "25:25"
