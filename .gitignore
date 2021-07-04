@@ -1,3 +1,4 @@
 enviroments/.env
 enviroments/.env.*
 .idea
+.vagrant
