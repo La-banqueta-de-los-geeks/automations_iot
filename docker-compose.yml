@@ -4,7 +4,7 @@ volumes:
   bundle_path_automation:
 services:
   iot_db_automation:
-    restart: on-failure:3
+    restart: always #on-failure:3
     image: postgres:13.2
     volumes:
       - postgres_automation:/var/lib/postgresql/data
@@ -13,7 +13,7 @@ services:
     env_file:
       - enviroments/.env.postgresql
   iot_redis:
-    restart: on-failure:3
+    restart: always #on-failure:3
     image: redis:alpine
     command: redis-server --requirepass vurokrazia
     ports:
@@ -21,7 +21,7 @@ services:
     environment:
       - REDIS_REPLICATION_MODE=master
   iot_administration:
-    restart:  on-failure:3
+    restart: always #on-failure:3
     build:
       context: ./iot_administration
       dockerfile: dev.dockerfile
@@ -39,7 +39,7 @@ services:
     env_file:
       - enviroments/.env.iot_administration
   # iot_frontend_administration:
-  #    restart:  on-failure:3
+  #    restart:  always #on-failure:3
   #    build:
   #      context: ./iot_frontend
   #      dockerfile: Dockerfile
@@ -51,11 +51,12 @@ services:
   iot_sidekiq_administration:
     environment:
       - RUN_SIDEKIQ=0
-    restart: on-failure:3
+    restart: always #on-failure:3
     image: automations_iot_administration:latest
     depends_on:
       - iot_redis
       - iot_db_automation
+      - iot_administration
     stdin_open: true
     tty: true
     volumes:
@@ -66,13 +67,14 @@ services:
   iot_sidekiq_mailers:
     environment:
       - RUN_MAILERS=0
-    restart: on-failure:3
+    restart: always #on-failure:3
     ports:
       - "25:25"
     image: automations_iot_administration:latest
     depends_on:
       - iot_redis
       - iot_db_automation
+      - iot_sidekiq_administration
     volumes:
       - ./iot_administration:/home/developer/app
       - bundle_path_automation:/usr/local/bundle # New
