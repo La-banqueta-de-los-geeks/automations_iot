@@ -10,3 +10,6 @@
 [submodule "automations_go"]
 	path = automations_go
 	url = git@github.com:La-banqueta-de-los-geeks/automations_go.git
+[submodule "vuro_berry"]
+	path = vuro_berry
+	url = git@github.com:La-banqueta-de-los-geeks/vuro_berry.git
